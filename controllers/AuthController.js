@@ -70,11 +70,11 @@ const login_post = async(req, res) => {
 };
 
 const login_get = async(req, res) => {
-    res.render('auth/login');
+    res.render('auth/login', {title: 'Login'});
 };
 
 const register_get = async(req, res) => {
-    res.render('auth/register');
+    res.render('auth/register', {title: 'Register'});
 };
 
 const home = async(req, res) => {

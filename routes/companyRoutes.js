@@ -3,10 +3,10 @@ const {getJob, addJob, updateJob, deleteJob, dashboard} = require('../controller
 
 const router = Router();
 
-router.get('/jobs/:id', getJob);
-router.post('/job/create', addJob);
-router.put('/job/update/:id', updateJob);
-router.post('/job/delete/:id', deleteJob);
-router.get('/dashboard', dashboard);
+router.get('/company/jobs', getJob);
+router.post('/company/job/create', addJob);
+router.put('/company/job/update/:id', updateJob);
+router.post('/company/job/delete/:id', deleteJob);
+router.get('/company/dashboard', dashboard);
 
 module.exports = router;

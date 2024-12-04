@@ -7,12 +7,15 @@ const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const cookieParser = require('cookie-parser');
 const {requireAuth, checkUser} = require('./middlewares/authMiddleware');
+const expressLayouts = require('express-ejs-layouts');
 
 require('dotenv').config();
 
 connectDb();
 
 app.use(express.static('public'));
+app.use(expressLayouts);
+app.set('layout', './layouts/company-layout');
 app.set('view engine', 'ejs');
 
 app.use(express.json());

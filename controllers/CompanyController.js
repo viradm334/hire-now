@@ -104,7 +104,7 @@ const dashboard = async(req, res) => {
     const jobIds = companyJobs.map(job => job._id);
 
     const applicationCount = await Application.countDocuments({ job_id: { $in: jobIds }, status: 'pending' });
-    res.status(200).json({jobCount: job_count, appCount: applicationCount});
+    res.render('company/dashboard', {title: 'Dashboard', jobCount: job_count, appCount: applicationCount});
    } catch(err){
     res.status(500).json({message: "Failed to fetch dashboard!"});
    }
