@@ -1,5 +1,5 @@
 const Application = require("../models/Application");
-const Job = require("../models/Job");
+const {Job, EmploymentTypeEnum, jobFunctionEnum, jobLevelEnum, educationEnum} = require("../models/Job");
 const User = require('../models/User');
 
 const getJob = async (req, res) => {
@@ -27,7 +27,38 @@ const addJob = async (req, res) => {
     available,
   } = req.body;
   try {
+    const castedSalary = Number(salary);
+    const castedVacancy = Number(vacancy);
+    const castedAvailable = Boolean(available);
+
+    // Validate that the casting was successful
+    if (isNaN(castedSalary) || isNaN(castedVacancy)) {
+      return res.status(400).json({ status: 'error', message: 'Invalid salary or vacancy value' });
+    }
+
     const job = await Job.create({
+      title,
+      user_id,
+      job_level,
+      location,
+      employment_type,
+      salary: castedSalary,
+      education,
+      job_desc,
+      vacancy: castedVacancy,
+      job_function,
+      available: castedAvailable,
+    });
+    res.status(200).json({ status: 'success', message: "Job successfully created!" });
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+const updateJob = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const {
       title,
       user_id,
       job_level,
@@ -39,21 +70,33 @@ const addJob = async (req, res) => {
       vacancy,
       job_function,
       available,
-    });
-    res.status(200).json({ message: "Job successfully created!" });
-  } catch (err) {
-    res.status(500).json(err.message);
-  }
-};
+    } = req.body;
 
-const updateJob = async (req, res) => {
-  try {
-    const {id} = req.params;
-    const job = await Job.findByIdAndUpdate(id, req.body);
+    const castedSalary = Number(salary);
+    const castedVacancy = Number(vacancy);
+    const castedAvailable = available === 'true'; 
+
+    // Validate that the casting was successful
+    if (isNaN(castedSalary) || isNaN(castedVacancy)) {
+      return res.status(400).json({ status: 'error', message: 'Invalid salary or vacancy value' });
+    };
+
+    const job = await Job.findByIdAndUpdate(id, {title,
+      user_id,
+      job_level,
+      location,
+      employment_type,
+      salary: castedSalary,
+      education,
+      job_desc,
+      vacancy: castedVacancy,
+      job_function,
+      available: castedAvailable});
+
     if(!job){
         return res.status(404).json({message: "Job not found!"});
-    }
-    res.status(200).json({message: "Successfully updated job data!"});
+    };
+    res.status(200).json({status: 'success', message: "Successfully updated job data!"});
   } catch (err) {
     res.status(500).json({ message: "Failed to update job!" });
   }
@@ -110,4 +153,32 @@ const dashboard = async(req, res) => {
    }
 };
 
-module.exports = {getJob, addJob, updateJob, deleteJob, view_applications, view_application_details, dashboard};
+const create_job_get = async(req, res) => {
+  const user = res.locals.user;
+  const employmentTypes = Object.values(EmploymentTypeEnum);
+  const jobFunctions = Object.values(jobFunctionEnum);
+  const jobLevels = Object.values(jobLevelEnum);
+  const educations = Object.values(educationEnum);
+  const booleanOptions = [
+    { label: "Yes", value: true },
+    { label: "No", value: false }
+  ];
+  res.render('company/jobs/create', {title: 'Create New Job', user, employmentTypes, jobFunctions, jobLevels, educations, booleanOptions});
+};
+
+const edit_job_get = async(req, res) => {
+  const {id} = req.params;
+  const user = res.locals.user;
+  const job = await Job.findById(id);
+  const employmentTypes = Object.values(EmploymentTypeEnum);
+  const jobFunctions = Object.values(jobFunctionEnum);
+  const jobLevels = Object.values(jobLevelEnum);
+  const educations = Object.values(educationEnum);
+  const booleanOptions = [
+    { label: "Yes", value: true },
+    { label: "No", value: false }
+  ];
+  res.render('company/jobs/update', {title: 'Update Job', user, employmentTypes, jobFunctions, jobLevels, educations, booleanOptions, job});
+};
+
+module.exports = {getJob, addJob, updateJob, deleteJob, view_applications, view_application_details, dashboard, create_job_get, edit_job_get};

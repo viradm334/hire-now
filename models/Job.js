@@ -1,5 +1,43 @@
 const mongoose = require("mongoose");
 
+const EmploymentTypeEnum = {
+  PART_TIME: 'part-time',
+  FULL_TIME: 'full-time',
+  FREELANCE: 'freelance',
+  CONTRACTUAL: 'contractual'
+};
+
+const jobFunctionEnum = {
+  ACCOUNTING_AND_FINANCE: "accounting-and-finance",
+  WRITING_AND_CONTENT: "writing-and-content",
+  HUMAN_RESOURCES: "human-resources",
+  IT_AND_SOFTWARE: "it-and-software",
+  SALES_AND_MARKETING: "sales-and-marketing",
+  ENGINEERING: "engineering",
+  HOSPITALITY_AND_TOURISM: "hospitality-and-tourism",
+  MANAGEMENT: "management",
+  CUSTOMER_SERVICE: "customer-service",
+  SCIENCE: "science"
+};
+
+const jobLevelEnum = {
+  INTERNSHIP: "internship",
+  ENTRY_LEVEL: "entry-level",
+  ASSOCIATE: "associate",
+  MID_SENIOR_LEVEL: "mid-senior-level",
+  DIRECTOR: "director"
+};
+
+const educationEnum = {
+  SMK: 'smk',
+  SMA: 'sma',
+  D3: 'd3',
+  D4: 'd4',
+  S1: 's1',
+  S2: 's2',
+  S3: 's3'
+};
+
 const jobSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -12,13 +50,7 @@ const jobSchema = new mongoose.Schema({
   },
   job_level: {
     type: String,
-    enum: [
-      "internship",
-      "entry-level",
-      "associate",
-      "mid-senior-level",
-      "director",
-    ],
+    enum: Object.values(jobLevelEnum),
     required: true,
   },
   location: {
@@ -27,7 +59,7 @@ const jobSchema = new mongoose.Schema({
   },
   employment_type: {
     type: String,
-    enum: ["part-time", "full-time", "freelance", "contractual"],
+    enum: Object.values(EmploymentTypeEnum),
     required: true,
   },
   salary: {
@@ -36,7 +68,7 @@ const jobSchema = new mongoose.Schema({
   },
   education: {
     type: String,
-    enum: ["sma", "smk", "d3", "s1", "s2", "s3"],
+    enum: Object.values(educationEnum),
   },
   job_desc: {
     type: String,
@@ -48,18 +80,7 @@ const jobSchema = new mongoose.Schema({
   },
   job_function: {
     type: String,
-    enum: [
-      "accounting-and-finance",
-      "writing-and-content",
-      "human-resources",
-      "it-and-software",
-      "sales-and-marketing",
-      "engineering",
-      "hospitality-and-tourism",
-      "management",
-      "customer-service",
-      "science"
-    ],
+    enum: Object.values(jobFunctionEnum),
     required: true,
   },
   available: {
@@ -82,4 +103,4 @@ const jobSchema = new mongoose.Schema({
 
 const Job = mongoose.model("Job", jobSchema);
 
-module.exports = Job;
+module.exports = {Job, EmploymentTypeEnum, jobFunctionEnum, jobLevelEnum, educationEnum};

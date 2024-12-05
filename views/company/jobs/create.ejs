@@ -1,0 +1,121 @@
+<div class="p-4">
+    <h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+    <form>
+        <input type="hidden" value="<%= user._id %>" name="user_id">
+        <div class="col-md-6">
+            <label for="title" class="font-weight-bold">Job Title</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Job Title" name="title">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_function" class="ms-0 font-weight-bold">Job Function</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="job_function">
+                    <% jobFunctions.forEach(type => { %>
+                        <option value="<%= type %>">
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_level" class="ms-0 font-weight-bold">Job Level</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="job_level">
+                    <% jobLevels.forEach(type => { %>
+                        <option value="<%= type %>">
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %> <!-- Capitalize first letter -->
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="employment_type" class="ms-0 font-weight-bold">Employment Type</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="employment_type">
+                    <% employmentTypes.forEach(type => { %>
+                        <option value="<%= type %>">
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="location" class="font-weight-bold">Location</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Location" name="location">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="salary" class="font-weight-bold">Salary</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Salary" name="salary">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="vacancy" class="font-weight-bold">Number of vacancy</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="number" class="form-control" placeholder="Vacancy" name="vacancy">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="available" class="ms-0 font-weight-bold">Available?</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="available">
+                    <% booleanOptions.forEach(option => { %>
+                        <option value="<%= option.value %>">
+                          <%= option.label %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_desc" class="font-weight-bold">Job description</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <textarea class="form-control" rows="5" placeholder="Enter your job description here" spellcheck="false" name="job_desc"></textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary my-3 align-content-center">Create Job</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async(e) => {
+        e.preventDefault();
+
+        const title = form.title.value;
+        const job_function = form.job_function.value;
+        const job_level = form.job_level.value;
+        const employment_type = form.employment_type.value;
+        const location = form.location.value;
+        const salary = form.salary.value;
+        const vacancy = form.vacancy.value;
+        const job_desc = form.job_desc.value;
+        const available = form.available.value;
+        const user_id = form.user_id.value;
+
+        console.log(title, job_function, job_level, location, employment_type, salary, vacancy, job_desc, available);
+
+        try{
+            const res = await fetch('/company/job/create', {
+                method: 'POST',
+                body: JSON.stringify({title, job_function, job_level, location, employment_type, salary, vacancy, job_desc, available, user_id}),
+                headers: {'Content-type' : 'application/json'}
+            });
+            const data = await res.json();
+            console.log(data);
+
+            if(data.status === 'success'){
+                window.location.assign('/company/jobs');
+            };
+        }catch(err){
+            console.log(err);
+        }
+    });
+</script>

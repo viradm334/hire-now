@@ -23,6 +23,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.get('*', checkUser);
+app.use('/company/*', checkUser);
 app.use(authRoutes);
 app.use(companyRoutes);
 app.use(userRoutes);
