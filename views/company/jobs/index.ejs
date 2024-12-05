@@ -1,0 +1,69 @@
+<h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+<a href="/company/job/create" class="btn btn-primary mb-1">+ Add new job</a>
+<div class="col-12">
+    <div class="card my-4">
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Job Title</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Job Function</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Job Level</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Available</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created At</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                <th class="text-secondary opacity-7"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% jobs.forEach((job, index) => { %>
+                    <tr>
+                          <td class="align-middle text-center">
+                            <span class="text-secondary text-xs font-weight-bold"><%= index + 1 %></span>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><%= job.title %></p>
+                          </td>
+                        <td>
+                          <p class="text-xs font-weight-bold mb-0"><%= job.job_function %></p>
+                        </td>
+                        <td>
+                            <p class="text-xs font-weight-bold mb-0"><%= job.job_level %></p>
+                          </td>
+                        <td class="align-middle text-center text-sm">
+                            <% if (job.available === true) { %>
+                                <span class="badge badge-sm bg-gradient-success">Yes</span>
+                            <% } else { %>
+                                <span class="badge badge-sm bg-gradient-secondary">No</span>
+                            <% } %>
+                        </td>
+                        <td class="align-middle text-center">
+                          <span class="text-secondary text-xs font-weight-bold"><%= new Date(job.created_at).toLocaleDateString('en-GB', {
+                            year: '2-digit',
+                            month: '2-digit',
+                            day: '2-digit'
+                          }) %></span>
+                        </td>
+                        <td class="align-middle text-center">
+                          <a class="badge badge-sm bg-gradient-secondary" href="/company/job/show/<%= job._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
+                            View
+                          </a>
+                          <a class="badge badge-sm bg-gradient-info" href="/company/job/update/<%= job._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
+                            Edit
+                          </a>
+                          <form action="/company/job/delete/<%= job._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this job?');" style="display: inline;">
+                            <button type="submit" class="badge badge-sm bg-gradient-danger" style="border: none;">
+                              Delete
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                <% });%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

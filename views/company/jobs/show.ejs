@@ -1,0 +1,86 @@
+<div class="p-4">
+    <h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+    <form>
+        <input type="hidden" value="<%= user._id %>" name="user_id">
+        <input type="hidden" value="<%= job._id %>" name="job_id">
+        <div class="col-md-6">
+            <label for="title" class="font-weight-bold">Job Title</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Job Title" name="title" value="<%= job.title %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_function" class="ms-0 font-weight-bold">Job Function</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="job_function" disabled>
+                    <% jobFunctions.forEach(type => { %>
+                        <option value="<%= type %>" <%= job.job_function === type ? 'selected' : '' %>>
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_level" class="ms-0 font-weight-bold">Job Level</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="job_level" disabled>
+                    <% jobLevels.forEach(type => { %>
+                        <option value="<%= type %>" <%= job.job_level === type ? 'selected' : '' %>>
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="employment_type" class="ms-0 font-weight-bold">Employment Type</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="employment_type" disabled>
+                    <% employmentTypes.forEach(type => { %>
+                        <option value="<%= type %>" <%= job.employment_type === type ? 'selected' : '' %>>
+                          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="location" class="font-weight-bold">Location</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Location" name="location"  value="<%= job.location %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="salary" class="font-weight-bold">Salary</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Salary" name="salary"  value="<%= job.salary %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="vacancy" class="font-weight-bold">Number of vacancy</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="number" class="form-control" placeholder="Vacancy" name="vacancy"  value="<%= job.vacancy %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="available" class="ms-0 font-weight-bold">Available?</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="available" disabled>
+                    <% booleanOptions.forEach(option => { %>
+                        <option value="<%= option.value %>" <%= job.available === option.value ? 'selected' : '' %>>
+                          <%= option.label %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="job_desc" class="font-weight-bold">Job description</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <textarea class="form-control" rows="5" placeholder="Enter your job description here" spellcheck="false" name="job_desc" disabled><%= job.job_desc %></textarea>
+            </div>
+        </div>
+        <a href="/company/jobs" class="btn btn-primary mb-1 mt-3">Go back to jobs list</a>
+    </form>
+  </div>
