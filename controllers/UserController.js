@@ -30,8 +30,8 @@ const job_details = async(req, res) => {
 
 const view_my_applications = async(req, res) => {
     try{
-        const {id} = req.params;
-        const applications = await Application.find({user_id: id});
+        const user = res.locals.user;
+        const applications = await Application.find({user_id: user.id});
 
         if(!applications){
             return res.status(404).json(applications);

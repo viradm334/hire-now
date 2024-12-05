@@ -1,6 +1,6 @@
 const Application = require("../models/Application");
 const {Job, EmploymentTypeEnum, jobFunctionEnum, jobLevelEnum, educationEnum} = require("../models/Job");
-const User = require('../models/User');
+const {User, industryEnum, companySizeEnum} = require('../models/User');
 
 const getJob = async (req, res) => {
   try {
@@ -29,9 +29,8 @@ const addJob = async (req, res) => {
   try {
     const castedSalary = Number(salary);
     const castedVacancy = Number(vacancy);
-    const castedAvailable = Boolean(available);
+    const castedAvailable = available === 'true'; 
 
-    // Validate that the casting was successful
     if (isNaN(castedSalary) || isNaN(castedVacancy)) {
       return res.status(400).json({ status: 'error', message: 'Invalid salary or vacancy value' });
     }
@@ -76,7 +75,6 @@ const updateJob = async (req, res) => {
     const castedVacancy = Number(vacancy);
     const castedAvailable = available === 'true'; 
 
-    // Validate that the casting was successful
     if (isNaN(castedSalary) || isNaN(castedVacancy)) {
       return res.status(400).json({ status: 'error', message: 'Invalid salary or vacancy value' });
     };
@@ -223,4 +221,49 @@ const view_job_details = async(req, res) => {
   }
 };
 
-module.exports = {getJob, addJob, updateJob, deleteJob, view_applications, view_application_details, dashboard, create_job_get, edit_job_get, view_job_details};
+const get_profile = async(req, res) => {
+  try{
+    const user = res.locals.user;
+    res.render('company/profile/index', {user, title: 'Profile'});
+  }catch(err){
+    res.status(500).json({message: 'Something wrong happened!'});
+  }
+};
+
+const edit_profile_get = async(req, res) => {
+  try{
+    const user = res.locals.user;
+    const industries = Object.values(industryEnum);
+    const companySize = companySizeEnum;
+    res.render('company/profile/edit', {user, title: "Edit Profile", industries, companySize});
+  }catch(err){
+    res.status(500).json({message: 'Something wrong happened!'});
+  }
+};
+
+const edit_profile_put = async(req, res) => {
+  try{
+    const user = res.locals.user;
+    const {
+      name,
+      email,
+      industry,
+      company_size,
+      about,
+      primary_location
+    } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(user.id, {
+      name,
+      email,
+      industry,
+      company_size,
+      about,
+      primary_location
+    });
+    res.status(200).json({status: 'success', message: 'Sucessfully updated profile!'});
+  }catch(err){
+    res.status(500).json({message: 'Something wrong happened!'});
+  }
+};
+
+module.exports = {getJob, addJob, updateJob, deleteJob, view_applications, view_application_details, dashboard, create_job_get, edit_job_get, view_job_details, get_profile, edit_profile_get, edit_profile_put};

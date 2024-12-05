@@ -1,0 +1,42 @@
+<div class="p-4">
+    <h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+    <form>
+        <div class="col-md-6">
+            <label for="title" class="font-weight-bold">Company Name</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Job Title" name="title" value="<%= user.name %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="font-weight-bold">Email</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Location" name="email" value="<%= user.email %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="industry" class="font-weight-bold">Industry</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Industry" name="industry"  value="<%= user.industry %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="primary_location" class="font-weight-bold">Location</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Salary" name="primary_location"  value="<%= user.primary_location %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="company_size" class="font-weight-bold">Company Size</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Company Size" name="company_size"  value="<%= user.company_size %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="about" class="font-weight-bold">About</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <textarea class="form-control" rows="5" placeholder="Enter your job description here" spellcheck="false" name="about" disabled><%= user.about %></textarea>
+            </div>
+        </div>
+        <a href="/company/profile/edit" class="btn btn-primary mb-1 mt-3">Edit Profile</a>
+    </form>
+  </div>

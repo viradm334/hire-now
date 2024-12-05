@@ -2,6 +2,28 @@ const mongoose = require("mongoose");
 const {isEmail} = require('validator');
 const bcrypt = require('bcrypt');
 
+const industryEnum = {
+  IT_SOFTWARE: 'it-and-software',
+  LEGAL_SERVICES: 'legal-and-professional-services',
+  FINANCE: 'finance',
+  HEALTHCARE: 'healthcare',
+  TELECOMMUNICATIONS: 'telecommunications',
+  CONSTRUCTION: 'construction',
+  MANUFACTURING: 'manufacturing',
+  HOSPITALITY_TOURISM: 'hospitality-and-tourism',
+  MEDIA_ENTERTAINMENT: 'media-and-entertainment'
+};
+
+const companySizeEnum = [
+  '1-10',
+  '11-50',
+  '50-100',
+  '100-200',
+  '200-500',
+  '500-1000',
+  '1000+'
+];
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -32,6 +54,13 @@ const userSchema = new mongoose.Schema({
   },
   resume: { type: String },
   profile_image: { type: String },
+  primary_location: { type: String},
+  company_size: {type: String, enum: companySizeEnum},
+  industry: {
+    type: String,
+    enum: Object.values(industryEnum),
+  },
+  about: {type: String},
   created_at: {
     type: Date,
     default: Date.now,
@@ -62,4 +91,4 @@ userSchema.statics.login = async function(email, password){
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = {User, industryEnum, companySizeEnum};

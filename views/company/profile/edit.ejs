@@ -1,0 +1,86 @@
+<div class="p-4">
+    <h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+    <form>
+        <div class="col-md-6">
+            <label for="title" class="font-weight-bold">Company Name</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Job Title" name="title" value="<%= user.name %>">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="font-weight-bold">Email</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Location" name="email"  value="<%= user.email %>">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="industry" class="ms-0 font-weight-bold">Industry</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="industry">
+                    <% industries.forEach(option => { %>
+                        <option value="<%= option %>" <%= user.industry === option ? 'selected' : '' %>>
+                          <%= option %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="primary_location" class="font-weight-bold">Primary Location</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Salary" name="primary_location"  value="<%= user.primary_location %>">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="company_size" class="ms-0 font-weight-bold">Company Size</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <select class="form-control" id="exampleFormControlSelect1" name="company_size">
+                    <% companySize.forEach(option => { %>
+                        <option value="<%= option %>" <%= user.company_size === option ? 'selected' : '' %>>
+                          <%= option %>
+                        </option>
+                    <% }); %>
+                </select>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <label for="about" class="font-weight-bold">About</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+                <textarea class="form-control" rows="5" placeholder="Enter your job description here" spellcheck="false" name="about"><%= user.about %></textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-1 mt-3">Save Changes</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async(e) => {
+        e.preventDefault();
+
+        const name = form.name.value;
+        const primary_location = form.primary_location.value;
+        const email = form.email.value;
+        const industry = form.industry.value;
+        const about = form.about.value;
+        const company_size = form.company_size.value;
+
+        console.log(name, primary_location, email, industry, about, company_size);
+
+        try{
+            const res = await fetch(`/company/profile/edit`, {
+                method: 'PUT',
+                body: JSON.stringify({name, primary_location, email, industry, about, company_size}),
+                headers: {'Content-type' : 'application/json'}
+            });
+            const data = await res.json();
+            console.log(data);
+
+            if(data.status === 'success'){
+                window.location.assign('/company/profile');
+            };
+        }catch(err){
+            console.log(err);
+        }
+    });
+</script>
