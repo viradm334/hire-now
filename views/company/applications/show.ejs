@@ -1,0 +1,36 @@
+<div class="p-4">
+    <h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+    <form>
+        <div class="col-md-6">
+            <label for="name" class="font-weight-bold">Name</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Name" name="Name" value="<%= application.user_id.name %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="location" class="font-weight-bold">Job Title</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Location" name="location"  value="<%= application.job_id.title %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="font-weight-bold">Email</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Email" name="email" value="<%= application.user_id.email %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="phone_number" class="font-weight-bold">Phone Number</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Email" name="email" value="<%= application.user_id.phone_number %>" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="resume" class="font-weight-bold">Resume</label>
+            <div class="input-group input-group-outline my-1 bg-white">
+              <input type="text" class="form-control" placeholder="Email" name="resume" value="<%= application.user_id.resume %>" disabled>
+            </div>
+        </div>
+        <a href="/company/applications" class="btn btn-primary mb-1 mt-3">Go back to applications list</a>
+    </form>
+  </div>

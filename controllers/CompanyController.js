@@ -117,9 +117,14 @@ const deleteJob = async (req, res) => {
 
 const view_applications = async(req, res) => {
   try{
-    const {id} = req.body;
-    const applications = await Application.find({job_id: id});
-    res.status(200).json(applications);
+    const user = res.locals.user;
+    const jobs = await Job.find({ user_id: user.id });
+    const jobIds = jobs.map(job => job._id);
+
+    const applications = await Application.find({ job_id: { $in: jobIds } })
+    .populate('user_id')
+    .populate('job_id');
+    res.render('company/applications/index', {applications, title: 'Applications list'});
   }catch(err){
     res.status(500).json({message: "Failed to get job applications!"});
   }
@@ -127,9 +132,19 @@ const view_applications = async(req, res) => {
 
 const view_application_details = async(req, res) => {
   try{
-    const {id} = req.body;
-    const application = await Application.findById(id);
-    res.status(200).json({application, message: "success"});
+    const {id} = req.params;
+    const application = await Application.findByIdAndUpdate(
+      id,
+      { status: 'reviewed' },
+      { new: true }
+    )
+      .populate('user_id')
+      .populate('job_id');
+
+    if(!application){
+      return res.status(404).json({message: 'Application not found!'});
+    };
+    res.render('company/applications/show', {application, title: 'Review Job Application'});
   } catch(err){
     res.status(500).json({message: "Failed to get job application details!"});
   }

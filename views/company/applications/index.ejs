@@ -1,0 +1,56 @@
+<h3 class="mb-3 h4 font-weight-bolder"><%= title %></h3>
+<div class="col-12">
+    <div class="card my-4">
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Job Title</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Applied At</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                <th class="text-secondary opacity-7"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% applications.forEach((application, index) => { %>
+                    <tr>
+                          <td class="align-middle text-center">
+                            <span class="text-secondary text-xs font-weight-bold"><%= index + 1 %></span>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><%= application.user_id.name %></p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><%= application.job_id.title %></p>
+                          </td>
+                        <td class="align-middle text-center text-sm">
+                            <% if (application.status === 'pending') { %>
+                                <span class="badge badge-sm bg-gradient-warning">Pending</span>
+                            <% } else { %>
+                                <span class="badge badge-sm bg-gradient-info">Reviewed</span>
+                            <% } %>
+                        </td>
+                        <td class="align-middle text-center">
+                          <span class="text-secondary text-xs font-weight-bold"><%= new Date(application.applied_at).toLocaleDateString('en-GB', {
+                            year: '2-digit',
+                            month: '2-digit',
+                            day: '2-digit'
+                          }) %></span>
+                        </td>
+                        <td class="align-middle text-center">
+                          <a class="badge badge-sm bg-gradient-primary" href="/company/applications/<%= application._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
+                            Review
+                          </a>
+                        </td>
+                      </tr>
+                <% });%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
