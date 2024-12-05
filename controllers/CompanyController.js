@@ -151,7 +151,7 @@ const view_application_details = async(req, res) => {
 const dashboard = async(req, res) => {
    try{
     const user = res.locals.user;
-    const job_count = await Job.countDocuments({user_id: user.id});
+    const job_count = await Job.countDocuments({user_id: user.id, isDeleted: false});
     const companyJobs = await Job.find({user_id: user.id});
 
     if (!companyJobs.length) {

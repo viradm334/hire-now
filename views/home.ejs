@@ -1,15 +1,40 @@
-<%- include('partials/header'); -%>
+<h6>Job Board</h6>
+<%if(!user) { %>
+  <a class="badge badge-sm bg-gradient-info" href="/login">Login</a>
+  <a class="badge badge-sm bg-gradient-warning" href="/register">Register</a>
+<% } %>
 
-<header>
-  <div class="smoothie">
-    <img src="/smoothie.png" alt="">
-  </div>
-  <div class="headings">
-    <h2>Smoothie Recipes</h2>
-    <h3>By Ninjas For Ninjas</h3>
-    <a href="/smoothies" class="btn">View Recipes</a>
-  </div>
-</header>
-
-
-<%- include('partials/footer'); -%>
+<div class="row">
+  <%if(user) { %>
+    <div class="ms-3">
+      <p class="mb-4">
+        Welcome, <%= user.name %>
+      </p>
+    </div>
+  <% } %>
+  <% jobs.forEach(job => { %>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 py-2">
+      <div class="card">
+        <div class="card-header p-2 ps-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="text-sm mb-0 text-capitalize"><%= job.user_id.name %></p>
+              <h4 class="mb-0"><%= job.title%></h4>
+            </div>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0">
+        <div class="card-footer p-2 ps-3">
+          <p class="mb-0 text-sm">
+            <% if (job.salary === null) { %>
+              Salary undisclosed
+            <% } else { %>
+              Rp <%= job.salary.toLocaleString('id-ID') %>
+            <% } %>            
+          </p>
+          <p class="mb-0 text-sm"><%= job.location %></p>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>

@@ -1,8 +1,9 @@
-const User = require('../models/User');
+const { Job } = require('../models/Job');
+const {User} = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 const handleErrors = (err) => {
-    let errors = {email: '', password: '', name: ''};
+    let errors = {email: '', password: '', name: '', role: ''};
 
     // incorrect email
 
@@ -35,7 +36,7 @@ const handleErrors = (err) => {
 
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-    return jwt.sign({ id }, 'net ninja secret', {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: maxAge
     });
 }
@@ -62,7 +63,8 @@ const login_post = async(req, res) => {
         const user = await User.login(email, password);
         const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-        res.status(200).json({user: user._id})
+        const redirectUrl = user.role === 'company' ? '/company/dashboard' : '/';
+        res.status(200).json({user: user._id, redirect: redirectUrl})
     } catch (error) {
         const errors = handleErrors(error);
         res.status(500).json({ errors });
@@ -78,7 +80,8 @@ const register_get = async(req, res) => {
 };
 
 const home = async(req, res) => {
-    res.render('home');
+    const jobs = await Job.find({available: true, isDeleted: false}).populate('user_id');
+    res.render('home', {title: 'Home', jobs});
 };
 
 const smoothies = async(req, res) => {
