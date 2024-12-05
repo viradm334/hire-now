@@ -32,3 +32,5 @@ app.use(profileRoutes);
 app.listen(process.env.PORT, () => {
     console.log('Hire now is running on port 3000');
 });
+
+module.exports = app;
