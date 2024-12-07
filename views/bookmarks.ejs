@@ -1,0 +1,69 @@
+<div class="row">
+    <%if(user) { %>
+      <div class="ms-3">
+        <p class="mb-4">
+          Welcome, <%= user.name %>
+        </p>
+      </div>
+    <% } %>
+    <% bookmarks.forEach(bookmark => { %>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 py-2">
+        <div class="card">
+          <div class="card-header p-2 ps-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <p class="text-sm mb-0 text-capitalize"><%= bookmark.job_id.user_id.name %></p>
+                <h4 class="mb-0"><%= bookmark.job_id.title %></h4>
+              </div>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-2 ps-3">
+            <p class="mb-0 text-sm">
+              <% if (bookmark.job_id.salary === null) { %>
+                Salary undisclosed
+              <% } else { %>
+                Rp <%= bookmark.job_id.salary.toLocaleString('id-ID') %>
+              <% } %>            
+            </p>
+            <p class="mb-0 text-sm"><%= bookmark.job_id.location %></p>
+            <form action="/bookmark/delete/<%= bookmark._id %>" method="POST" style="display: inline;">
+                <!-- <input type="hidden" name="_method" value="DELETE"> -->
+                <button type="submit" class="badge badge-sm bg-gradient-warning mt-1" style="border: none;">
+                  Remove
+                </button>
+              </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async(e) => {
+        e.preventDefault();
+
+        const confirmation = confirm('Are you sure you want to remove this job from bookmarks?');
+        if (!confirmation) return;
+
+        const url = form.action;
+
+        try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (res.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to delete the job.');
+        }
+        } catch (err) {
+        console.error(err);
+        alert('An error occurred. Please try again.');
+        }
+    });
+
+</script>

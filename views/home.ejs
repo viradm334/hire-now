@@ -33,8 +33,47 @@
             <% } %>            
           </p>
           <p class="mb-0 text-sm"><%= job.location %></p>
+          <% if (user) { %> <!-- Only show bookmark button if the user is logged in -->
+            <% if (!job.isBookmarked) { %>
+              <form action="/bookmark/create" method="POST" style="display: inline;">
+                <input type="hidden" name="job_id" value="<%= job._id %>">
+                <input type="hidden" name="user_id" value="<%= user._id %>">
+                <button type="submit" class="badge badge-sm bg-gradient-primary mt-1" style="border: none;">
+                  Add to bookmarks
+                </button>
+              </form>
+            <% } else { %>
+              <p>Already bookmarked</p>
+            <% } %>
+          <% } %>
         </div>
       </div>
     </div>
   <% }) %>
 </div>
+
+<script>
+  const form = document.querySelector('form');
+  form.addEventListener('submit', async(e) => {
+      e.preventDefault();
+
+      const job_id= form.job_id.value;
+      const user_id = form.user_id.value;
+
+      try{
+          const res = await fetch('/bookmark/create', {
+              method: 'POST',
+              body: JSON.stringify({job_id, user_id}),
+              headers: {'Content-type' : 'application/json'}
+          });
+          const data = await res.json();
+          console.log(data);
+
+          if(data.status === 'success'){
+              window.location.assign('/bookmarks');
+          };
+      }catch(err){
+          console.log(err);
+      }
+  });
+</script>

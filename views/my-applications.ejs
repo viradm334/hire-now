@@ -1,0 +1,33 @@
+<div class="row">
+    <%if(user) { %>
+      <div class="ms-3">
+        <p class="mb-4">
+          Welcome, <%= user.name %>
+        </p>
+      </div>
+    <% } %>
+    <% applications.forEach(application => { %>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 py-2">
+        <div class="card">
+          <div class="card-header p-2 ps-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <p class="text-sm mb-0 text-capitalize"><%= application.job_id.user_id.name %></p>
+                <h4 class="mb-0"><%= application.job_id.title %></h4>
+              </div>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-2 ps-3">
+            <p class="mb-0 text-sm">
+                <% if (application.status === 'pending') { %>
+                 Your application is pending
+                <% } else { %>
+                <span class="text-success font-weight-bolder">Your application is being reviewed</span>
+                <% } %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
