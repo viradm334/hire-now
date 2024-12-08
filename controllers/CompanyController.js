@@ -153,10 +153,6 @@ const dashboard = async(req, res) => {
     const user = res.locals.user;
     const job_count = await Job.countDocuments({user_id: user.id, isDeleted: false});
     const companyJobs = await Job.find({user_id: user.id});
-
-    if (!companyJobs.length) {
-      return 0;
-    };
     const jobIds = companyJobs.map(job => job._id);
 
     const applicationCount = await Application.countDocuments({ job_id: { $in: jobIds }, status: 'pending' });
